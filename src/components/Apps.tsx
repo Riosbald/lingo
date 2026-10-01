@@ -14,45 +14,43 @@ export default function Apps() {
     ))
   }
 
-  const toggleEnabled = (id: string) => {
-    setApps(prev => prev.map(a =>
-      a.id === id ? { ...a, enabled: !a.enabled } : a
-    ))
-  }
-
   const filteredApps = apps.filter(a =>
     categoryFilter === 'all' || a.category === categoryFilter
   )
 
   const installedApps = apps.filter(a => a.installed)
+
   const riskColors = {
-    low: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-    medium: 'text-amber-400 bg-amber-500/10 border-amber-500/20',
-    high: 'text-red-400 bg-red-500/10 border-red-500/20',
+    low: { color: '#34d399', bg: 'rgba(16, 185, 129, 0.1)', border: 'rgba(16, 185, 129, 0.2)' },
+    medium: { color: '#fbbf24', bg: 'rgba(251, 191, 36, 0.1)', border: 'rgba(251, 191, 36, 0.2)' },
+    high: { color: '#f87171', bg: 'rgba(239, 68, 68, 0.1)', border: 'rgba(239, 68, 68, 0.2)' },
   }
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="flex-shrink-0 px-4 pt-4 pb-3 border-b border-zinc-800/50">
-        <div className="flex items-center justify-between mb-3">
-          <div>
-            <h2 className="text-lg font-semibold text-zinc-100">Apps</h2>
-            <p className="text-[11px] text-zinc-500">{installedApps.length} installed · {apps.length} available</p>
-          </div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ flexShrink: 0, padding: '16px', borderBottom: '1px solid rgba(39, 39, 42, 0.5)' }}>
+        <div style={{ marginBottom: '12px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#fafafa', margin: '0 0 4px' }}>Apps</h2>
+          <p style={{ fontSize: '11px', color: '#71717a', margin: 0 }}>{installedApps.length} installed · {apps.length} available</p>
         </div>
 
-        {/* Category Filter */}
-        <div className="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
+        <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px', scrollbarWidth: 'none' }}>
           {categories.map(cat => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-2.5 py-1 rounded-full text-[10px] font-medium whitespace-nowrap transition-all ${
-                categoryFilter === cat
-                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
-                  : 'text-zinc-500 hover:text-zinc-300 bg-zinc-900/30'
-              }`}
+              style={{
+                padding: '4px 10px',
+                borderRadius: '9999px',
+                fontSize: '10px',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+                background: categoryFilter === cat ? 'rgba(99, 102, 241, 0.2)' : 'rgba(24, 24, 27, 0.3)',
+                color: categoryFilter === cat ? '#a5b4fc' : '#71717a',
+                border: categoryFilter === cat ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid transparent',
+                cursor: 'pointer',
+                flexShrink: 0
+              }}
             >
               {cat === 'all' ? 'All Apps' : cat}
             </button>
@@ -60,75 +58,134 @@ export default function Apps() {
         </div>
       </div>
 
-      {/* App Detail Modal */}
       {selectedApp && (
-        <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 backdrop-blur-sm" onClick={() => setSelectedApp(null)}>
+        <div
+          onClick={() => setSelectedApp(null)}
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 50,
+            display: 'flex',
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+            background: 'rgba(0, 0, 0, 0.6)',
+            backdropFilter: 'blur(4px)'
+          }}
+        >
           <div
-            className="w-full max-w-lg bg-zinc-900 border-t border-zinc-800 rounded-t-2xl p-5 animate-slide-up safe-bottom"
             onClick={e => e.stopPropagation()}
+            style={{
+              width: '100%',
+              maxWidth: '500px',
+              background: '#18181b',
+              borderTop: '1px solid #27272a',
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+              padding: '20px',
+              paddingBottom: '32px'
+            }}
           >
-            <div className="flex items-start gap-3 mb-4">
-              <span className="text-3xl">{selectedApp.icon}</span>
-              <div className="flex-1">
-                <h3 className="text-base font-semibold text-zinc-100">{selectedApp.name}</h3>
-                <p className="text-xs text-zinc-400 mt-0.5">{selectedApp.category}</p>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '16px' }}>
+              <span style={{ fontSize: '32px' }}>{selectedApp.icon}</span>
+              <div style={{ flex: 1 }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#fafafa', margin: '0 0 4px' }}>{selectedApp.name}</h3>
+                <p style={{ fontSize: '12px', color: '#a1a1aa', margin: 0 }}>{selectedApp.category}</p>
               </div>
               <button
                 onClick={() => setSelectedApp(null)}
-                className="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
+                style={{
+                  padding: '6px',
+                  borderRadius: '8px',
+                  color: '#71717a',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px'
+                }}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
+                ✕
               </button>
             </div>
 
-            <p className="text-sm text-zinc-300 leading-relaxed mb-4">{selectedApp.description}</p>
+            <p style={{ fontSize: '14px', color: '#d4d4d8', lineHeight: 1.6, marginBottom: '16px' }}>{selectedApp.description}</p>
 
-            <div className="space-y-3 mb-4">
-              <div>
-                <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Capabilities</h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {selectedApp.capabilities.map(cap => (
-                    <span key={cap} className="px-2 py-1 text-[10px] rounded-md bg-cyan-500/10 text-cyan-300 border border-cyan-500/20">
-                      {cap}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-1.5">Risk Level</h4>
-                <span className={`px-2 py-1 text-[10px] rounded-md border ${riskColors[selectedApp.risk]}`}>
-                  {selectedApp.risk.toUpperCase()}
-                </span>
+            <div style={{ marginBottom: '16px' }}>
+              <h4 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 6px' }}>Capabilities</h4>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {selectedApp.capabilities.map(cap => (
+                  <span key={cap} style={{
+                    padding: '4px 8px',
+                    fontSize: '10px',
+                    borderRadius: '6px',
+                    background: 'rgba(6, 182, 212, 0.1)',
+                    color: '#22d3ee',
+                    border: '1px solid rgba(6, 182, 212, 0.2)'
+                  }}>
+                    {cap}
+                  </span>
+                ))}
               </div>
             </div>
 
-            <div className="flex gap-2">
+            <div style={{ display: 'flex', gap: '8px' }}>
               {selectedApp.installed ? (
                 <>
                   <button
-                    onClick={() => { toggleEnabled(selectedApp.id); setSelectedApp({ ...selectedApp, enabled: !selectedApp.enabled }) }}
-                    className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                      selectedApp.enabled
-                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
-                        : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
-                    }`}
+                    onClick={() => {
+                      const updated = { ...selectedApp, enabled: !selectedApp.enabled }
+                      setSelectedApp(updated)
+                      setApps(prev => prev.map(a => a.id === updated.id ? updated : a))
+                    }}
+                    style={{
+                      flex: 1,
+                      padding: '10px',
+                      borderRadius: '12px',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      background: selectedApp.enabled ? 'rgba(16, 185, 129, 0.2)' : '#27272a',
+                      color: selectedApp.enabled ? '#34d399' : '#a1a1aa',
+                      border: selectedApp.enabled ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid #3f3f46',
+                      cursor: 'pointer'
+                    }}
                   >
                     {selectedApp.enabled ? '✓ Enabled' : '○ Disabled'}
                   </button>
                   <button
-                    onClick={() => { toggleInstall(selectedApp.id); setSelectedApp({ ...selectedApp, installed: false }) }}
-                    className="px-4 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 transition-colors"
+                    onClick={() => {
+                      toggleInstall(selectedApp.id)
+                      setSelectedApp(null)
+                    }}
+                    style={{
+                      padding: '10px 16px',
+                      borderRadius: '12px',
+                      fontSize: '14px',
+                      fontWeight: 500,
+                      background: 'rgba(239, 68, 68, 0.1)',
+                      color: '#f87171',
+                      border: '1px solid rgba(239, 68, 68, 0.2)',
+                      cursor: 'pointer'
+                    }}
                   >
                     Remove
                   </button>
                 </>
               ) : (
                 <button
-                  onClick={() => { toggleInstall(selectedApp.id); setSelectedApp({ ...selectedApp, installed: true, enabled: true }) }}
-                  className="flex-1 py-2.5 rounded-xl text-sm font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition-colors"
+                  onClick={() => {
+                    toggleInstall(selectedApp.id)
+                    setSelectedApp(null)
+                  }}
+                  style={{
+                    flex: 1,
+                    padding: '10px',
+                    borderRadius: '12px',
+                    fontSize: '14px',
+                    fontWeight: 500,
+                    background: '#6366f1',
+                    color: 'white',
+                    border: 'none',
+                    cursor: 'pointer'
+                  }}
                 >
                   Install App
                 </button>
@@ -138,28 +195,31 @@ export default function Apps() {
         </div>
       )}
 
-      {/* App Grid */}
-      <div className="flex-1 overflow-y-auto px-4 py-3 pb-24">
-        {/* Installed Section */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '12px 16px 96px' }}>
         {categoryFilter === 'all' && installedApps.length > 0 && (
-          <div className="mb-4">
-            <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">Installed</h3>
-            <div className="grid grid-cols-2 gap-2">
+          <div style={{ marginBottom: '16px' }}>
+            <h3 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>Installed</h3>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
               {installedApps.map(app => (
                 <button
                   key={app.id}
                   onClick={() => setSelectedApp(app)}
-                  className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700/50 transition-all text-left"
+                  style={{
+                    padding: '12px',
+                    borderRadius: '12px',
+                    background: 'rgba(24, 24, 27, 0.5)',
+                    border: '1px solid rgba(39, 39, 42, 0.5)',
+                    cursor: 'pointer',
+                    textAlign: 'left'
+                  }}
                 >
-                  <div className="flex items-center gap-2 mb-1.5">
-                    <span className="text-xl">{app.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-xs font-medium text-zinc-200 truncate">{app.name}</h4>
-                    </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                    <span style={{ fontSize: '20px' }}>{app.icon}</span>
+                    <h4 style={{ fontSize: '12px', fontWeight: 500, color: '#e4e4e7', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.name}</h4>
                   </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className={`w-1.5 h-1.5 rounded-full ${app.enabled ? 'bg-emerald-400' : 'bg-zinc-600'}`} />
-                    <span className="text-[9px] text-zinc-500">{app.enabled ? 'Active' : 'Paused'}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: app.enabled ? '#34d399' : '#52525b' }} />
+                    <span style={{ fontSize: '9px', color: '#71717a' }}>{app.enabled ? 'Active' : 'Paused'}</span>
                   </div>
                 </button>
               ))}
@@ -167,47 +227,65 @@ export default function Apps() {
           </div>
         )}
 
-        {/* All / Filtered Apps */}
         <div>
-          <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">
+          <h3 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>
             {categoryFilter === 'all' ? 'Discover' : categoryFilter}
           </h3>
-          <div className="space-y-2">
-            {filteredApps.map(app => (
-              <button
-                key={app.id}
-                onClick={() => setSelectedApp(app)}
-                className="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50 hover:border-zinc-700/50 transition-all text-left"
-              >
-                <span className="text-2xl flex-shrink-0">{app.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h4 className="text-sm font-medium text-zinc-200 truncate">{app.name}</h4>
-                    <span className={`px-1.5 py-0.5 text-[8px] rounded border ${riskColors[app.risk]}`}>
-                      {app.risk}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-zinc-500 truncate mt-0.5">{app.description}</p>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-[9px] text-zinc-600">{app.category}</span>
-                    <span className="text-zinc-800">·</span>
-                    <span className="text-[9px] text-zinc-600">{app.capabilities.length} capabilities</span>
-                  </div>
+          {filteredApps.map(app => (
+            <button
+              key={app.id}
+              onClick={() => setSelectedApp(app)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '12px',
+                borderRadius: '12px',
+                background: 'rgba(24, 24, 27, 0.5)',
+                border: '1px solid rgba(39, 39, 42, 0.5)',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <span style={{ fontSize: '24px', flexShrink: 0 }}>{app.icon}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                  <h4 style={{ fontSize: '14px', fontWeight: 500, color: '#e4e4e7', margin: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.name}</h4>
+                  <span style={{
+                    padding: '2px 6px',
+                    fontSize: '8px',
+                    borderRadius: '4px',
+                    color: riskColors[app.risk].color,
+                    background: riskColors[app.risk].bg,
+                    border: `1px solid ${riskColors[app.risk].border}`
+                  }}>
+                    {app.risk}
+                  </span>
                 </div>
-                <div className="flex-shrink-0">
-                  {app.installed ? (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                      Installed
-                    </span>
-                  ) : (
-                    <span className="px-2.5 py-1 rounded-full text-[10px] font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                      Install
-                    </span>
-                  )}
+                <p style={{ fontSize: '11px', color: '#71717a', margin: '0 0 4px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{app.description}</p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ fontSize: '9px', color: '#52525b' }}>{app.category}</span>
+                  <span style={{ color: '#3f3f46' }}>·</span>
+                  <span style={{ fontSize: '9px', color: '#52525b' }}>{app.capabilities.length} capabilities</span>
                 </div>
-              </button>
-            ))}
-          </div>
+              </div>
+              <div style={{ flexShrink: 0 }}>
+                <span style={{
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  background: app.installed ? 'rgba(16, 185, 129, 0.1)' : 'rgba(99, 102, 241, 0.1)',
+                  color: app.installed ? '#34d399' : '#818cf8',
+                  border: app.installed ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(99, 102, 241, 0.2)'
+                }}>
+                  {app.installed ? 'Installed' : 'Install'}
+                </span>
+              </div>
+            </button>
+          ))}
         </div>
       </div>
     </div>

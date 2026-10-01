@@ -8,94 +8,92 @@ import ChatModal from './components/ChatModal'
 
 type Tab = 'home' | 'tasks' | 'memories' | 'apps' | 'settings'
 
-const tabs: { id: Tab; label: string; icon: string }[] = [
-  { id: 'home', label: 'Home', icon: 'home' },
-  { id: 'tasks', label: 'Tasks', icon: 'tasks' },
-  { id: 'memories', label: 'Memories', icon: 'memories' },
-  { id: 'apps', label: 'Apps', icon: 'apps' },
-  { id: 'settings', label: 'Settings', icon: 'settings' },
-]
-
-function TabIcon({ icon, active }: { icon: string; active: boolean }) {
-  const color = active ? 'text-indigo-400' : 'text-zinc-500'
-  
-  switch (icon) {
-    case 'home':
-      return (
-        <svg className={`w-5 h-5 ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-        </svg>
-      )
-    case 'tasks':
-      return (
-        <svg className={`w-5 h-5 ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-        </svg>
-      )
-    case 'memories':
-      return (
-        <svg className={`w-5 h-5 ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-        </svg>
-      )
-    case 'apps':
-      return (
-        <svg className={`w-5 h-5 ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-        </svg>
-      )
-    case 'settings':
-      return (
-        <svg className={`w-5 h-5 ${color}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={active ? 2 : 1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      )
-    default:
-      return null
-  }
-}
-
 export default function App() {
   const [activeTab, setActiveTab] = useState<Tab>('home')
   const [showChat, setShowChat] = useState(false)
 
   return (
-    <div className="h-screen flex flex-col bg-zinc-950 text-zinc-100 overflow-hidden">
+    <div style={{ 
+      height: '100vh', 
+      display: 'flex', 
+      flexDirection: 'column',
+      background: '#09090b',
+      color: '#fafafa',
+      overflow: 'hidden',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }}>
       {/* Top Bar */}
-      <header className="flex-shrink-0 h-12 flex items-center justify-between px-4 border-b border-zinc-800/50 bg-zinc-950/90 backdrop-blur-md z-40">
-        <div className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center">
-            <span className="text-[10px] font-bold text-white">O</span>
+      <header style={{
+        height: '48px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 16px',
+        borderBottom: '1px solid rgba(39, 39, 42, 0.5)',
+        background: 'rgba(9, 9, 11, 0.9)',
+        backdropFilter: 'blur(12px)',
+        flexShrink: 0
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '10px',
+            fontWeight: 'bold',
+            color: 'white'
+          }}>
+            O
           </div>
-          <span className="text-sm font-semibold text-zinc-200">Omi</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+          <span style={{ fontSize: '14px', fontWeight: 600, color: '#e4e4e7' }}>Omi</span>
+          <span style={{
+            fontSize: '10px',
+            padding: '2px 6px',
+            borderRadius: '9999px',
+            background: 'rgba(16, 185, 129, 0.1)',
+            color: '#34d399',
+            border: '1px solid rgba(16, 185, 129, 0.2)'
+          }}>
             Connected
           </span>
         </div>
         
-        <div className="flex items-center gap-2">
-          {/* Chat Button */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <button
             onClick={() => setShowChat(true)}
-            className="p-2 rounded-lg text-zinc-400 hover:text-indigo-400 hover:bg-indigo-500/10 transition-colors"
-            title="Ask OmiGPT"
+            style={{
+              padding: '8px',
+              borderRadius: '8px',
+              color: '#a1a1aa',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer'
+            }}
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
+            💬
           </button>
           
-          {/* Device Status */}
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-zinc-900/50 border border-zinc-800/50">
-            <div className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-[10px] text-zinc-400">73%</span>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 8px',
+            borderRadius: '8px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)'
+          }}>
+            <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#34d399' }} />
+            <span style={{ fontSize: '10px', color: '#a1a1aa' }}>73%</span>
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-hidden h-full">
+      <main style={{ flex: 1, overflow: 'hidden' }}>
         {activeTab === 'home' && <Home />}
         {activeTab === 'tasks' && <Tasks />}
         {activeTab === 'memories' && <Memories />}
@@ -104,27 +102,48 @@ export default function App() {
       </main>
 
       {/* Bottom Navigation */}
-      <nav className="flex-shrink-0 border-t border-zinc-800/50 bg-zinc-950/95 backdrop-blur-md safe-bottom">
-        <div className="flex items-center justify-around h-16 px-2">
-          {tabs.map(tab => (
+      <nav style={{
+        borderTop: '1px solid rgba(39, 39, 42, 0.5)',
+        background: 'rgba(9, 9, 11, 0.95)',
+        backdropFilter: 'blur(12px)',
+        flexShrink: 0
+      }}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-around',
+          height: '64px',
+          padding: '0 8px'
+        }}>
+          {(['home', 'tasks', 'memories', 'apps', 'settings'] as const).map(tab => (
             <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
-                activeTab === tab.id
-                  ? 'text-indigo-400'
-                  : 'text-zinc-500 hover:text-zinc-300'
-              }`}
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                padding: '6px 12px',
+                borderRadius: '12px',
+                background: 'transparent',
+                border: 'none',
+                cursor: 'pointer',
+                color: activeTab === tab ? '#818cf8' : '#71717a',
+                transition: 'color 0.2s'
+              }}
             >
-              <TabIcon icon={tab.icon} active={activeTab === tab.id} />
-              <span className={`text-[9px] font-medium ${
-                activeTab === tab.id ? 'text-indigo-400' : 'text-zinc-500'
-              }`}>
-                {tab.label}
+              <span style={{ fontSize: '20px' }}>
+                {tab === 'home' && '🏠'}
+                {tab === 'tasks' && '📋'}
+                {tab === 'memories' && '🧠'}
+                {tab === 'apps' && '🛍️'}
+                {tab === 'settings' && '⚙️'}
               </span>
-              {activeTab === tab.id && (
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-indigo-500" />
-              )}
+              <span style={{ fontSize: '9px', fontWeight: 500 }}>
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </span>
             </button>
           ))}
         </div>

@@ -5,72 +5,89 @@ export default function Settings() {
   const [selectedLanguage, setSelectedLanguage] = useState('English')
   const [cloudSync, setCloudSync] = useState(true)
   const [localOnly, setLocalOnly] = useState(false)
-  const [voiceProfileTrained, setVoiceProfileTrained] = useState(true)
   const [micGain, setMicGain] = useState(device.micGain)
-  const [ledColor, setLedColor] = useState(device.ledColor)
-  const [doubleTapAction, setDoubleTapAction] = useState(device.doubleTapAction)
-  const [showLanguagePicker, setShowLanguagePicker] = useState(false)
 
   const storagePercent = (device.storage.used / device.storage.total) * 100
 
   return (
-    <div className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto pb-24">
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      <div style={{ flex: 1, overflowY: 'auto', paddingBottom: '96px' }}>
         {/* Device Status Card */}
-        <div className="px-4 pt-4 pb-3">
-          <div className="p-4 rounded-2xl bg-gradient-to-br from-zinc-900 to-zinc-900/50 border border-zinc-800/50">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-cyan-500/20 border border-indigo-500/30 flex items-center justify-center">
-                    <span className="text-xl">🔘</span>
+        <div style={{ padding: '16px' }}>
+          <div style={{
+            padding: '16px',
+            borderRadius: '16px',
+            background: 'linear-gradient(135deg, #18181b, rgba(24, 24, 27, 0.5))',
+            border: '1px solid rgba(39, 39, 42, 0.5)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div style={{ position: 'relative' }}>
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '16px',
+                    background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.2))',
+                    border: '1px solid rgba(99, 102, 241, 0.3)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '20px'
+                  }}>
+                    🔘
                   </div>
-                  <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-zinc-900 ${
-                    device.connected ? 'bg-emerald-400' : 'bg-zinc-600'
-                  }`} />
+                  <div style={{
+                    position: 'absolute',
+                    bottom: '-2px',
+                    right: '-2px',
+                    width: '14px',
+                    height: '14px',
+                    borderRadius: '50%',
+                    background: device.connected ? '#34d399' : '#52525b',
+                    border: '2px solid #18181b'
+                  }} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-zinc-100">{device.name}</h3>
-                  <p className="text-[10px] text-zinc-500">{device.model} · FW {device.firmware}</p>
+                  <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#fafafa', margin: '0 0 2px' }}>{device.name}</h3>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>{device.model} · FW {device.firmware}</p>
                 </div>
               </div>
-              <div className="text-right">
-                <div className="flex items-center gap-1">
-                  <BatteryIcon level={device.battery} charging={device.charging} />
-                  <span className={`text-sm font-bold ${
-                    device.battery > 50 ? 'text-emerald-400' :
-                    device.battery > 20 ? 'text-amber-400' : 'text-red-400'
-                  }`}>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    color: device.battery > 50 ? '#34d399' : device.battery > 20 ? '#fbbf24' : '#f87171'
+                  }}>
                     {device.battery}%
                   </span>
                 </div>
-                <p className="text-[9px] text-zinc-500">
+                <p style={{ fontSize: '9px', color: '#71717a', margin: 0 }}>
                   {device.charging ? '⚡ Charging' : `~${Math.round(device.battery * 0.14)}h left`}
                 </p>
               </div>
             </div>
 
-            {/* Storage */}
-            <div className="mb-3">
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] text-zinc-500">Local Storage</span>
-                <span className="text-[10px] text-zinc-400">{device.storage.used}GB / {device.storage.total}GB</span>
+            <div style={{ marginBottom: '12px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ fontSize: '10px', color: '#71717a' }}>Local Storage</span>
+                <span style={{ fontSize: '10px', color: '#a1a1aa' }}>{device.storage.used}GB / {device.storage.total}GB</span>
               </div>
-              <div className="h-2 rounded-full bg-zinc-800">
-                <div
-                  className={`h-full rounded-full transition-all ${
-                    storagePercent > 80 ? 'bg-red-500' : storagePercent > 60 ? 'bg-amber-500' : 'bg-indigo-500'
-                  }`}
-                  style={{ width: `${storagePercent}%` }}
-                />
+              <div style={{ height: '8px', borderRadius: '9999px', background: '#27272a' }}>
+                <div style={{
+                  height: '100%',
+                  borderRadius: '9999px',
+                  background: storagePercent > 80 ? '#ef4444' : storagePercent > 60 ? '#f59e0b' : '#6366f1',
+                  width: `${storagePercent}%`,
+                  transition: 'width 0.3s'
+                }} />
               </div>
             </div>
 
-            {/* Mic Gain */}
             <div>
-              <div className="flex items-center justify-between mb-1">
-                <span className="text-[10px] text-zinc-500">Microphone Gain</span>
-                <span className="text-[10px] text-zinc-400">{micGain}%</span>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <span style={{ fontSize: '10px', color: '#71717a' }}>Microphone Gain</span>
+                <span style={{ fontSize: '10px', color: '#a1a1aa' }}>{micGain}%</span>
               </div>
               <input
                 type="range"
@@ -78,250 +95,262 @@ export default function Settings() {
                 max="100"
                 value={micGain}
                 onChange={e => setMicGain(Number(e.target.value))}
-                className="w-full h-1.5 rounded-full appearance-none bg-zinc-800 accent-indigo-500 cursor-pointer"
+                style={{
+                  width: '100%',
+                  height: '6px',
+                  borderRadius: '9999px',
+                  appearance: 'none',
+                  background: '#27272a',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
               />
             </div>
           </div>
         </div>
 
         {/* Hardware Controls */}
-        <div className="px-4 pb-3">
-          <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">Hardware Controls</h3>
-          <div className="space-y-2">
-            {/* LED Color */}
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">💡</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">LED Status Color</p>
-                    <p className="text-[10px] text-zinc-500">Indicates recording state</p>
-                  </div>
+        <div style={{ padding: '0 16px 12px' }}>
+          <h3 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>Hardware Controls</h3>
+          
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)',
+            marginBottom: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>💡</span>
+                <div>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>LED Status Color</p>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>Indicates recording state</p>
                 </div>
-                <div className="flex gap-1.5">
-                  {['#6366f1', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'].map(color => (
-                    <button
-                      key={color}
-                      onClick={() => setLedColor(color)}
-                      className={`w-5 h-5 rounded-full border-2 transition-all ${
-                        ledColor === color ? 'border-white scale-110' : 'border-transparent'
-                      }`}
-                      style={{ background: color }}
-                    />
-                  ))}
-                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {['#6366f1', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6'].map(color => (
+                  <button
+                    key={color}
+                    style={{
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      background: color,
+                      border: device.ledColor === color ? '2px solid white' : '2px solid transparent',
+                      cursor: 'pointer'
+                    }}
+                  />
+                ))}
               </div>
             </div>
+          </div>
 
-            {/* Double Tap Action */}
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">👆</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">Double-Tap Action</p>
-                    <p className="text-[10px] text-zinc-500">Physical button shortcut</p>
-                  </div>
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>👆</span>
+                <div>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>Double-Tap Action</p>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>Physical button shortcut</p>
                 </div>
-                <select
-                  value={doubleTapAction}
-                  onChange={e => setDoubleTapAction(e.target.value)}
-                  className="px-2 py-1 rounded-lg bg-zinc-800 border border-zinc-700 text-[10px] text-zinc-300 focus:outline-none focus:border-indigo-500/50"
-                >
-                  <option>Quick Memo</option>
-                  <option>Pause Recording</option>
-                  <option>Bookmark 60s</option>
-                  <option>Send Alert</option>
-                  <option>Stop & Process</option>
-                </select>
               </div>
+              <select
+                value={device.doubleTapAction}
+                style={{
+                  padding: '4px 8px',
+                  borderRadius: '8px',
+                  background: '#27272a',
+                  border: '1px solid #3f3f46',
+                  color: '#d4d4d8',
+                  fontSize: '10px',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                <option>Quick Memo</option>
+                <option>Pause Recording</option>
+                <option>Bookmark 60s</option>
+                <option>Send Alert</option>
+              </select>
             </div>
           </div>
         </div>
 
         {/* Account Settings */}
-        <div className="px-4 pb-3">
-          <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">Account</h3>
-          <div className="space-y-2">
-            {/* Language */}
-            <button
-              onClick={() => setShowLanguagePicker(!showLanguagePicker)}
-              className="w-full p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50 text-left"
-            >
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">🌐</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">Language</p>
-                    <p className="text-[10px] text-zinc-500">{languages.length}+ languages supported</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs text-indigo-400">{selectedLanguage}</span>
-                  <svg className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${showLanguagePicker ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+        <div style={{ padding: '0 16px 12px' }}>
+          <h3 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>Account</h3>
+          
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)',
+            marginBottom: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>🌐</span>
+                <div>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>Language</p>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>{languages.length}+ languages supported</p>
                 </div>
               </div>
-              {showLanguagePicker && (
-                <div className="mt-2 pt-2 border-t border-zinc-800/50 max-h-40 overflow-y-auto no-scrollbar">
-                  <div className="grid grid-cols-2 gap-1">
-                    {languages.map(lang => (
-                      <button
-                        key={lang}
-                        onClick={() => { setSelectedLanguage(lang); setShowLanguagePicker(false) }}
-                        className={`px-2 py-1.5 rounded text-[10px] text-left transition-colors ${
-                          selectedLanguage === lang
-                            ? 'bg-indigo-500/20 text-indigo-300'
-                            : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/50'
-                        }`}
-                      >
-                        {lang}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </button>
-
-            {/* Voice Profile */}
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">🎙️</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">Voice Profile</p>
-                    <p className="text-[10px] text-zinc-500">
-                      {voiceProfileTrained ? 'Trained — Speaker diarization active' : 'Not trained — Tap to start'}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setVoiceProfileTrained(!voiceProfileTrained)}
-                  className={`px-2.5 py-1 rounded-full text-[10px] font-medium transition-all ${
-                    voiceProfileTrained
-                      ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                      : 'bg-zinc-800 text-zinc-400 border border-zinc-700'
-                  }`}
-                >
-                  {voiceProfileTrained ? '✓ Active' : 'Train'}
-                </button>
-              </div>
+              <select
+                value={selectedLanguage}
+                onChange={e => setSelectedLanguage(e.target.value)}
+                style={{
+                  padding: '4px 8px',
+                  borderRadius: '8px',
+                  background: '#27272a',
+                  border: '1px solid #3f3f46',
+                  color: '#818cf8',
+                  fontSize: '12px',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                {languages.map(lang => (
+                  <option key={lang} value={lang}>{lang}</option>
+                ))}
+              </select>
             </div>
+          </div>
 
-            {/* Cloud Sync Toggle */}
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">☁️</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">Cloud Sync</p>
-                    <p className="text-[10px] text-zinc-500">Sync transcripts and memories to cloud</p>
-                  </div>
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)',
+            marginBottom: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>☁️</span>
+                <div>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>Cloud Sync</p>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>Sync transcripts and memories</p>
                 </div>
-                <ToggleSwitch enabled={cloudSync} onToggle={() => setCloudSync(!cloudSync)} />
               </div>
+              <button
+                onClick={() => setCloudSync(!cloudSync)}
+                style={{
+                  width: '40px',
+                  height: '22px',
+                  borderRadius: '9999px',
+                  background: cloudSync ? '#6366f1' : '#3f3f46',
+                  border: 'none',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  transition: 'background 0.2s'
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '2px',
+                  left: cloudSync ? '20px' : '2px',
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '50%',
+                  background: 'white',
+                  transition: 'left 0.2s'
+                }} />
+              </button>
             </div>
+          </div>
 
-            {/* Local Only Mode */}
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <span className="text-sm">🔒</span>
-                  <div>
-                    <p className="text-xs text-zinc-200">Local-Only Mode</p>
-                    <p className="text-[10px] text-zinc-500">All processing stays on device</p>
-                  </div>
+          <div style={{
+            padding: '12px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.5)',
+            border: '1px solid rgba(39, 39, 42, 0.5)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>🔒</span>
+                <div>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>Local-Only Mode</p>
+                  <p style={{ fontSize: '10px', color: '#71717a', margin: 0 }}>All processing stays on device</p>
                 </div>
-                <ToggleSwitch enabled={localOnly} onToggle={() => setLocalOnly(!localOnly)} />
               </div>
+              <button
+                onClick={() => setLocalOnly(!localOnly)}
+                style={{
+                  width: '40px',
+                  height: '22px',
+                  borderRadius: '9999px',
+                  background: localOnly ? '#6366f1' : '#3f3f46',
+                  border: 'none',
+                  cursor: 'pointer',
+                  position: 'relative',
+                  transition: 'background 0.2s'
+                }}
+              >
+                <div style={{
+                  position: 'absolute',
+                  top: '2px',
+                  left: localOnly ? '20px' : '2px',
+                  width: '18px',
+                  height: '18px',
+                  borderRadius: '50%',
+                  background: 'white',
+                  transition: 'left 0.2s'
+                }} />
+              </button>
             </div>
           </div>
         </div>
 
         {/* Privacy & Security */}
-        <div className="px-4 pb-3">
-          <h3 className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider mb-2 px-1">Privacy & Security</h3>
-          <div className="space-y-2">
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center gap-2.5">
-                <span className="text-sm">🛡️</span>
+        <div style={{ padding: '0 16px 12px' }}>
+          <h3 style={{ fontSize: '10px', fontWeight: 'bold', color: '#71717a', textTransform: 'uppercase', letterSpacing: '0.05em', margin: '0 0 8px' }}>Privacy & Security</h3>
+          
+          {[
+            { icon: '🛡️', title: 'Encryption', desc: 'SOC 2 & HIPAA aligned · AES-256', color: '#34d399' },
+            { icon: '📦', title: 'Self-Hosting', desc: 'Open-source · Host on your own hardware', color: '#a1a1aa' },
+            { icon: '🗑️', title: 'Data Management', desc: 'Export or delete all data at any time', color: '#a1a1aa' },
+          ].map((item, i) => (
+            <div
+              key={i}
+              style={{
+                padding: '12px',
+                borderRadius: '12px',
+                background: 'rgba(24, 24, 27, 0.5)',
+                border: '1px solid rgba(39, 39, 42, 0.5)',
+                marginBottom: '8px'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '14px' }}>{item.icon}</span>
                 <div>
-                  <p className="text-xs text-zinc-200">Encryption</p>
-                  <p className="text-[10px] text-emerald-400">SOC 2 & HIPAA aligned · AES-256</p>
+                  <p style={{ fontSize: '12px', color: '#e4e4e7', margin: '0 0 2px' }}>{item.title}</p>
+                  <p style={{ fontSize: '10px', color: item.color, margin: 0 }}>{item.desc}</p>
                 </div>
               </div>
             </div>
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center gap-2.5">
-                <span className="text-sm">📦</span>
-                <div>
-                  <p className="text-xs text-zinc-200">Self-Hosting</p>
-                  <p className="text-[10px] text-zinc-500">Open-source · Host on your own hardware</p>
-                </div>
-              </div>
-            </div>
-            <div className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800/50">
-              <div className="flex items-center gap-2.5">
-                <span className="text-sm">🗑️</span>
-                <div>
-                  <p className="text-xs text-zinc-200">Data Management</p>
-                  <p className="text-[10px] text-zinc-500">Export or delete all data at any time</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* About */}
-        <div className="px-4 pb-6">
-          <div className="p-4 rounded-xl bg-zinc-900/30 border border-zinc-800/30 text-center">
-            <p className="text-xs text-zinc-500">Omi AI v3.2.1</p>
-            <p className="text-[10px] text-zinc-600 mt-1">Open Source · MIT License</p>
-            <p className="text-[10px] text-zinc-600">github.com/BasedHardware/omi</p>
+        <div style={{ padding: '0 16px 24px' }}>
+          <div style={{
+            padding: '16px',
+            borderRadius: '12px',
+            background: 'rgba(24, 24, 27, 0.3)',
+            border: '1px solid rgba(39, 39, 42, 0.3)',
+            textAlign: 'center'
+          }}>
+            <p style={{ fontSize: '12px', color: '#71717a', margin: '0 0 4px' }}>Omi AI v3.2.1</p>
+            <p style={{ fontSize: '10px', color: '#52525b', margin: '0 0 2px' }}>Open Source · MIT License</p>
+            <p style={{ fontSize: '10px', color: '#52525b', margin: 0 }}>github.com/BasedHardware/omi</p>
           </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-// ============================================
-// Sub-components
-// ============================================
-
-function ToggleSwitch({ enabled, onToggle }: { enabled: boolean; onToggle: () => void }) {
-  return (
-    <button
-      onClick={onToggle}
-      role="switch"
-      aria-checked={enabled}
-      className={`relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 ${
-        enabled ? 'bg-indigo-500' : 'bg-zinc-700'
-      }`}
-    >
-      <span
-        className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
-          enabled ? 'translate-x-[20px]' : 'translate-x-[2px]'
-        }`}
-      />
-    </button>
-  )
-}
-
-function BatteryIcon({ level, charging }: { level: number; charging: boolean }) {
-  return (
-    <div className="relative w-6 h-3 rounded-sm border border-zinc-500 flex items-center p-px">
-      <div
-        className={`h-full rounded-sm transition-all ${
-          level > 50 ? 'bg-emerald-400' : level > 20 ? 'bg-amber-400' : 'bg-red-400'
-        }`}
-        style={{ width: `${level}%` }}
-      />
-      <div className="absolute -right-1 top-1/2 -translate-y-1/2 w-0.5 h-1.5 bg-zinc-500 rounded-r" />
-      {charging && (
-        <span className="absolute -top-1 -right-2 text-[6px]">⚡</span>
-      )}
     </div>
   )
 }
