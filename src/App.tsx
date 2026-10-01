@@ -95,7 +95,7 @@ export default function App() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden h-full">
         {activeTab === 'home' && <Home />}
         {activeTab === 'tasks' && <Tasks />}
         {activeTab === 'memories' && <Memories />}
@@ -110,7 +110,7 @@ export default function App() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
+              className={`relative flex flex-col items-center justify-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
                 activeTab === tab.id
                   ? 'text-indigo-400'
                   : 'text-zinc-500 hover:text-zinc-300'
@@ -123,7 +123,7 @@ export default function App() {
                 {tab.label}
               </span>
               {activeTab === tab.id && (
-                <div className="absolute -bottom-0 w-8 h-0.5 rounded-full bg-indigo-500" style={{ marginTop: '2px' }} />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 rounded-full bg-indigo-500" />
               )}
             </button>
           ))}

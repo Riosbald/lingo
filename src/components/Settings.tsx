@@ -294,16 +294,16 @@ function ToggleSwitch({ enabled, onToggle }: { enabled: boolean; onToggle: () =>
   return (
     <button
       onClick={onToggle}
-      className={`relative w-10 h-5.5 rounded-full transition-colors ${
+      role="switch"
+      aria-checked={enabled}
+      className={`relative inline-flex h-[22px] w-[40px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-900 ${
         enabled ? 'bg-indigo-500' : 'bg-zinc-700'
       }`}
-      style={{ width: '40px', height: '22px' }}
     >
-      <div
-        className={`absolute top-0.5 w-4.5 h-4.5 rounded-full bg-white shadow-sm transition-transform ${
-          enabled ? 'translate-x-5' : 'translate-x-0.5'
+      <span
+        className={`pointer-events-none inline-block h-[18px] w-[18px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+          enabled ? 'translate-x-[20px]' : 'translate-x-[2px]'
         }`}
-        style={{ width: '18px', height: '18px', transform: enabled ? 'translateX(20px)' : 'translateX(2px)' }}
       />
     </button>
   )

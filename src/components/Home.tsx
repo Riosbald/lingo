@@ -1,5 +1,21 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { conversations, liveTranscript, speakers, type Message, type Conversation } from '../data'
+
+// Pre-compute stable waveform values to prevent flicker on re-render
+function generateWaveformBars(count: number) {
+  const bars: { height: number; duration: number; delay: number }[] = []
+  // Use a simple seeded pseudo-random for stability
+  let seed = 42
+  const rand = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646 }
+  for (let i = 0; i < count; i++) {
+    bars.push({
+      height: rand() * 14 + 4,
+      duration: 0.5 + rand() * 0.5,
+      delay: i * 0.05,
+    })
+  }
+  return bars
+}
 
 export default function Home() {
   const [isLive, setIsLive] = useState(true)
@@ -40,6 +56,7 @@ export default function Home() {
   })
 
   const getSpeaker = (id: string) => speakers.find(s => s.id === id) || speakers[0]
+  const waveformBars = useMemo(() => generateWaveformBars(32), [])
 
   if (selectedConversation) {
     return (
@@ -78,14 +95,14 @@ export default function Home() {
         {/* Waveform visualization */}
         {isLive && (
           <div className="px-4 pb-2 flex items-center gap-0.5 h-6">
-            {Array.from({ length: 32 }).map((_, i) => (
+            {waveformBars.map((bar, i) => (
               <div
                 key={i}
                 className="w-1 rounded-full bg-indigo-500/60"
                 style={{
-                  height: `${Math.random() * 14 + 4}px`,
-                  animation: `waveform ${0.5 + Math.random() * 0.5}s ease-in-out infinite`,
-                  animationDelay: `${i * 0.05}s`,
+                  height: `${bar.height}px`,
+                  animation: `waveform ${bar.duration}s ease-in-out infinite`,
+                  animationDelay: `${bar.delay}s`,
                 }}
               />
             ))}
